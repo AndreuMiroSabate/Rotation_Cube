@@ -260,6 +260,7 @@ class Arcball(customtkinter.CTk):
         """
         Event triggered function on the event of a push on the button button_quat
         """
+        hola = 1
         pass
 
     
