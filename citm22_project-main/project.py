@@ -276,8 +276,25 @@ class Arcball(customtkinter.CTk):
         Rq[2,0] = 2*q[1]*q[3]- 2*q[0]*q[2]
         Rq[2,1] = 2*q[2]*q[3]+ 2*q[0]*q[1]
         Rq[1,2] = 2*q[2]*q[3]- 2*q[0]*q[1]
+        
+        self.entry_RotM_11.destroy()
+        self.entry_RotM_11= customtkinter.CTkEntry(self.RotMFrame, width=50, border_width=0)
+        self.entry_RotM_11.insert(0,str((Rq[0,0])))
+        self.entry_RotM_11.configure(state="disabled")
+        self.entry_RotM_11.grid(row=0, column=1, padx=(2,0), pady=(20,0), sticky="ew")
+
+        self.entry_RotM_12.insert(0,str((Rq[0,1])))
+        self.entry_RotM_13.insert(0,str((Rq[0,2])))
+        self.entry_RotM_21.insert(0,str((Rq[1,0])))
+        self.entry_RotM_22.insert(0,str((Rq[1,1])))
+        self.entry_RotM_23.insert(0,str((Rq[1,2])))
+        self.entry_RotM_31.insert(0,str((Rq[2,0])))
+        self.entry_RotM_32.insert(0,str((Rq[2,1])))
+        self.entry_RotM_33.insert(0,str((Rq[2,2])))
+        
         print(Rq)
-        self.entry_RotM_11.insert(0,str(Rq[0,0]))
+        
+        self.update_cube()
 
         pass
 
