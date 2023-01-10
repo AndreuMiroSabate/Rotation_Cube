@@ -238,11 +238,25 @@ class Arcball(customtkinter.CTk):
         """
         #Example on hot to get values from entries:
         angle = self.entry_AA_angle.get()
-        axis1 = self.entry_AA_ax1.get()
-        axis2 = self.entry_AA_ax2.get()
-        axis3 = self.entry_AA_ax3.get()
+        axis = np.zeros((3,1))
+        Ux = np.empty((3,3))
+        axis[0,0] = self.entry_AA_ax1.get()
+        axis[1,0] = self.entry_AA_ax2.get()
+        axis[2,0] = self.entry_AA_ax3.get()
 
+        Ux[1,0] = axis[2,0]
+        Ux[0,1] = -axis[2,0]
+        Ux[0,2] = axis[1,0]
+        Ux[2,0] = -axis[1,0]
+        Ux[1,2] = axis[0,0]
+        Ux[2,1] = -axis[0,0]
         
+
+        #R = np.identity(3)*np.cos(angle)+((1-np.cos(angle))*(axis@axis.T)) + Ux*np.sin(angle)
+        R = np.identity(3)*0+((1-0)*(axis@axis.T)) + Ux*1
+        print(R)
+        self.M = R.dot(self.M)
+        self.update_cube()
  
         #Example string to number
         print(float(angle)*2)
