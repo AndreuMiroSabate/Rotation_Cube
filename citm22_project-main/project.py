@@ -293,7 +293,9 @@ class Arcball(customtkinter.CTk):
         self.entry_RotM_33.insert(0,str((Rq[2,2])))
         
         print(Rq)
-        
+        self.M = Rq.dot(self.M)
+        """self.M = self.M[0:,0:]/abs(self.M[0:,0:])"""
+        print(self.M)
         self.update_cube()
 
         pass
