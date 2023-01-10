@@ -238,6 +238,12 @@ class Arcball(customtkinter.CTk):
         """
         #Example on hot to get values from entries:
         angle = self.entry_AA_angle.get()
+        axis1 = self.entry_AA_ax1.get()
+        axis2 = self.entry_AA_ax2.get()
+        axis3 = self.entry_AA_ax3.get()
+
+        
+ 
         #Example string to number
         print(float(angle)*2)
 
@@ -270,12 +276,12 @@ class Arcball(customtkinter.CTk):
         Rq[0,0] = (q[0]**2+ q[1]**2-q[2]**2-q[3]**2)
         Rq[1,1] = q[0]**2- q[1]**2+q[2]**2-q[3]**2
         Rq[2,2] = q[0]**2- q[1]**2-q[2]**2+q[3]**2
-        Rq[0,1] = 2*q[1]*q[2]- 2*q[0]*q[3]
-        Rq[1,0] = 2*q[1]*q[2]+ 2*q[0]*q[3]
-        Rq[0,2] = 2*q[1]*q[3]+ 2*q[0]*q[2]
-        Rq[2,0] = 2*q[1]*q[3]- 2*q[0]*q[2]
-        Rq[2,1] = 2*q[2]*q[3]+ 2*q[0]*q[1]
-        Rq[1,2] = 2*q[2]*q[3]- 2*q[0]*q[1]
+        Rq[0,1] = (2*q[1]*q[2])- (2*q[0]*q[3])
+        Rq[1,0] = (2*q[1]*q[2])+ (2*q[0]*q[3])
+        Rq[0,2] = (2*q[1]*q[3])+ (2*q[0]*q[2])
+        Rq[2,0] = (2*q[1]*q[3])- (2*q[0]*q[2])
+        Rq[2,1] = (2*q[2]*q[3])+ (2*q[0]*q[1])
+        Rq[1,2] = (2*q[2]*q[3])- (2*q[0]*q[1])
         
         self.entry_RotM_11.destroy()
         self.entry_RotM_11= customtkinter.CTkEntry(self.RotMFrame, width=50, border_width=0)
@@ -293,8 +299,11 @@ class Arcball(customtkinter.CTk):
         self.entry_RotM_33.insert(0,str((Rq[2,2])))
         
         print(Rq)
+        print(np.linalg.det(Rq))
+        
         self.M = Rq.dot(self.M)
-        """self.M = self.M[0:,0:]/abs(self.M[0:,0:])"""
+        print(self.M)
+        self.M = self.M[0:,0:]/10
         print(self.M)
         self.update_cube()
 
@@ -318,12 +327,13 @@ class Arcball(customtkinter.CTk):
         
         #Example
         if self.pressed: #Only triggered if previous click
+            
             x_fig,y_fig= self.canvas_coordinates_to_figure_coordinates(event.x,event.y) #Extract viewport coordinates
             
             print("x: ", x_fig)
             print("y", y_fig)
             print("r2", x_fig*x_fig+y_fig*y_fig)
-
+            
             R = np.array([[0, 1, 0], [-1, 0, 0], [0, 0, 1]])
                     
             self.M = R.dot(self.M) #Modify the vertices matrix with a rotation matrix M
