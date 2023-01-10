@@ -260,7 +260,13 @@ class Arcball(customtkinter.CTk):
         """
         Event triggered function on the event of a push on the button button_quat
         """
-        hola = 1
+        q = self.quat
+        qc = np.zeros((4,1))
+        qc[0,0] = q[0,0]
+        qc[1:,0] = -q[1:,0]
+        Qr = q@qc.T
+        self.rotM[0:,0:] = Qr[1:,1:]
+        print(Qr)
         pass
 
     
