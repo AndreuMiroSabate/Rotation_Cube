@@ -266,7 +266,9 @@ class Arcball(customtkinter.CTk):
         qc[1:,0] = -q[1:,0]
         Qr = q@qc.T
         self.rotM[0:,0:] = Qr[1:,1:]
+        self.entry_RotM_11.insert(0,"3.0")
         print(Qr)
+        print(self.rotM)
         pass
 
     
