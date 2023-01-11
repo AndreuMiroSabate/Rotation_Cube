@@ -232,6 +232,16 @@ class Arcball(customtkinter.CTk):
         """
         Event triggered function on the event of a push on the button Reset
         """
+        self.M = np.array(
+            [[ -1,  -1, 1],   
+            [ -1,   1, 1],    
+            [1,   1, 1],      
+            [1,  -1, 1],      
+            [-1,  -1, -1],    
+            [-1,  1, -1],     
+            [1,   1, -1],     
+            [1,  -1, -1]], dtype=float).transpose() 
+        self.update_cube()
         pass
 
     
@@ -241,6 +251,7 @@ class Arcball(customtkinter.CTk):
         """
         #Example on hot to get values from entries:
         angle = self.entry_AA_angle.get()
+        angle = math.radians(float(angle))
         axis = np.zeros((3,1))
         Ux = np.empty((3,3))
         axis[0,0] = self.entry_AA_ax1.get()
@@ -255,8 +266,8 @@ class Arcball(customtkinter.CTk):
         Ux[2,1] = -axis[0,0]
         
 
-        #R = np.identity(3)*np.cos(angle)+((1-np.cos(angle))*(axis@axis.T)) + Ux*np.sin(angle)
-        R = np.identity(3)*0+((1-0)*(axis@axis.T)) + Ux*1
+        R = np.identity(3)*np.math(angle)+((1-np.math(angle))*(axis@axis.T)) + Ux*np.math(angle)
+       #R = np.identity(3)*0+((1-0)*(axis@axis.T)) + Ux*1
         print(R)
         self.M = R.dot(self.M)
         self.update_cube()
@@ -337,7 +348,7 @@ class Arcball(customtkinter.CTk):
         
         self.M = Rq.dot(self.M)
         print(self.M)
-        self.M = self.M[0:,0:]/10
+        #self.M = self.M[0:,0:]/abs()
         print(self.M)
         self.update_cube()
 
