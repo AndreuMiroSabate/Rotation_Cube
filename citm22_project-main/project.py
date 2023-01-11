@@ -6,6 +6,7 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 import matplotlib.pyplot as plt
 
 import numpy as np
+import math
 
 customtkinter.set_appearance_mode("Dark")  # Modes: "System" (standard), "Dark", "Light"
 customtkinter.set_default_color_theme("dark-blue")  # Themes: "blue" (standard), "green", "dark-blue"
@@ -179,8 +180,10 @@ class Arcball(customtkinter.CTk):
         self.label_RotM= customtkinter.CTkLabel(self.RotMFrame, text="RotM = ")
         self.label_RotM.grid(row=0, column=0, rowspan=3, padx=(2,0), pady=(20,0), sticky="e")
 
+
+        #aaaa
         self.entry_RotM_11= customtkinter.CTkEntry(self.RotMFrame, width=50, border_width=0)
-        self.entry_RotM_11.insert(0,"1.0")
+        self.entry_RotM_11.insert(0,"1.2")
         self.entry_RotM_11.configure(state="disabled")
         self.entry_RotM_11.grid(row=0, column=1, padx=(2,0), pady=(20,0), sticky="ew")
 
@@ -266,6 +269,8 @@ class Arcball(customtkinter.CTk):
         """
         Event triggered function on the event of a push on the button button_rotV 
         """
+
+
         pass
 
     
@@ -273,6 +278,21 @@ class Arcball(customtkinter.CTk):
         """
         Event triggered function on the event of a push on the button button_EA
         """
+        print("putas mates aaa ", self.entry_EA_roll.get())
+        roll = ( float(self.entry_EA_roll.get()) * math.pi)/180
+        yaw = (float(self.entry_EA_yaw.get()) * math.pi)/180
+        pitch = (float(self.entry_EA_pitch.get()) * math.pi)/180
+
+        Rx = np.array([[1,0,0],[0,math.cos(roll),math.sin(roll)],[0,-math.sin(roll),math.cos(roll)]])
+        Ry = np.array([[math.cos(pitch),0,-math.sin(pitch)],[0,1,0],[math.sin(pitch),0,math.cos(pitch)]])
+        Rz = np.array([[math.cos(yaw),math.sin(yaw),0],[-math.sin(yaw),math.cos(yaw),0],[0,0,1]])
+        
+        R = Rx @ Ry @ Rz
+        R = R.transpose()
+
+        self.M = R.dot(self.M)
+        self.update_cube()
+        
         pass
 
     
