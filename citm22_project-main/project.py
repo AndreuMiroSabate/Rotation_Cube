@@ -15,6 +15,7 @@ customtkinter.set_default_color_theme("dark-blue")  # Themes: "blue" (standard),
 class Arcball(customtkinter.CTk):
 
     def __init__(self):
+
         super().__init__()
 
         # Orientation vars. Initialized to represent 0 rotation
@@ -179,54 +180,111 @@ class Arcball(customtkinter.CTk):
 
         self.label_RotM= customtkinter.CTkLabel(self.RotMFrame, text="RotM = ")
         self.label_RotM.grid(row=0, column=0, rowspan=3, padx=(2,0), pady=(20,0), sticky="e")
-
-
+        
         #aaaa
         self.entry_RotM_11= customtkinter.CTkEntry(self.RotMFrame, width=50, border_width=0)
-        self.entry_RotM_11.insert(0,"1.0")
+        self.entry_RotM_11.insert(0, self.Rm[0][0])
         self.entry_RotM_11.configure(state="disabled")
         self.entry_RotM_11.grid(row=0, column=1, padx=(2,0), pady=(20,0), sticky="ew")
 
         self.entry_RotM_12= customtkinter.CTkEntry(self.RotMFrame, width=50, border_width=0)
-        self.entry_RotM_12.insert(0,"0.0")
+        self.entry_RotM_12.insert(0, self.Rm[0][1])
         self.entry_RotM_12.configure(state="disabled")
         self.entry_RotM_12.grid(row=0, column=2, padx=(2,0), pady=(20,0), sticky="ew")
 
         self.entry_RotM_13= customtkinter.CTkEntry(self.RotMFrame, width=50, border_width=0)
-        self.entry_RotM_13.insert(0,"0.0")
+        self.entry_RotM_13.insert(0, self.Rm[0][2])
         self.entry_RotM_13.configure(state="disabled")
         self.entry_RotM_13.grid(row=0, column=3, padx=(2,0), pady=(20,0), sticky="ew")
 
         self.entry_RotM_21= customtkinter.CTkEntry(self.RotMFrame, width=50, border_width=0)
-        self.entry_RotM_21.insert(0,"0.0")
+        self.entry_RotM_21.insert(0, self.Rm[1][0])
         self.entry_RotM_21.configure(state="disabled")
         self.entry_RotM_21.grid(row=1, column=1, padx=(2,0), pady=(2,0), sticky="ew")
 
         self.entry_RotM_22= customtkinter.CTkEntry(self.RotMFrame, width=50, border_width=0)
-        self.entry_RotM_22.insert(0,"1.0")
+        self.entry_RotM_22.insert(0, self.Rm[1][1])
         self.entry_RotM_22.configure(state="disabled")
         self.entry_RotM_22.grid(row=1, column=2, padx=(2,0), pady=(2,0), sticky="ew")
 
         self.entry_RotM_23= customtkinter.CTkEntry(self.RotMFrame, width=50, border_width=0)
-        self.entry_RotM_23.insert(0,"0.0")
+        self.entry_RotM_23.insert(0, self.Rm[1][2])
         self.entry_RotM_23.configure(state="disabled")
         self.entry_RotM_23.grid(row=1, column=3, padx=(2,0), pady=(2,0), sticky="ew")
 
         self.entry_RotM_31= customtkinter.CTkEntry(self.RotMFrame, width=50, border_width=0)
-        self.entry_RotM_31.insert(0,"0.0")
+        self.entry_RotM_31.insert(0, self.Rm[2][0])
         self.entry_RotM_31.configure(state="disabled")
         self.entry_RotM_31.grid(row=2, column=1, padx=(2,0), pady=(2,0), sticky="ew")
 
         self.entry_RotM_32= customtkinter.CTkEntry(self.RotMFrame, width=50, border_width=0)
-        self.entry_RotM_32.insert(0,"0.0")
+        self.entry_RotM_32.insert(0, self.Rm[2][1])
         self.entry_RotM_32.configure(state="disabled")
         self.entry_RotM_32.grid(row=2, column=2, padx=(2,0), pady=(2,0), sticky="ew")
 
         self.entry_RotM_33= customtkinter.CTkEntry(self.RotMFrame, width=50, border_width=0)
-        self.entry_RotM_33.insert(0,"1.0")
+        self.entry_RotM_33.insert(0, self.Rm[2][2])
         self.entry_RotM_33.configure(state="disabled")
         self.entry_RotM_33.grid(row=2, column=3, padx=(2,0), pady=(2,0), sticky="ew")
-    
+        pass
+
+    def rotMatrix(self):
+        self.entry_RotM_11.destroy()
+        self.entry_RotM_12.destroy()
+        self.entry_RotM_13.destroy()
+        self.entry_RotM_21.destroy()
+        self.entry_RotM_22.destroy()
+        self.entry_RotM_23.destroy()
+        self.entry_RotM_31.destroy()
+        self.entry_RotM_32.destroy()
+        self.entry_RotM_33.destroy()
+
+        #aaaa
+        self.entry_RotM_11= customtkinter.CTkEntry(self.RotMFrame, width=50, border_width=0)
+        self.entry_RotM_11.insert(0, self.Rm[0][0])
+        self.entry_RotM_11.configure(state="disabled")
+        self.entry_RotM_11.grid(row=0, column=1, padx=(2,0), pady=(20,0), sticky="ew")
+
+        self.entry_RotM_12= customtkinter.CTkEntry(self.RotMFrame, width=50, border_width=0)
+        self.entry_RotM_12.insert(0, self.Rm[0][1])
+        self.entry_RotM_12.configure(state="disabled")
+        self.entry_RotM_12.grid(row=0, column=2, padx=(2,0), pady=(20,0), sticky="ew")
+
+        self.entry_RotM_13= customtkinter.CTkEntry(self.RotMFrame, width=50, border_width=0)
+        self.entry_RotM_13.insert(0, self.Rm[0][2])
+        self.entry_RotM_13.configure(state="disabled")
+        self.entry_RotM_13.grid(row=0, column=3, padx=(2,0), pady=(20,0), sticky="ew")
+
+        self.entry_RotM_21= customtkinter.CTkEntry(self.RotMFrame, width=50, border_width=0)
+        self.entry_RotM_21.insert(0, self.Rm[1][0])
+        self.entry_RotM_21.configure(state="disabled")
+        self.entry_RotM_21.grid(row=1, column=1, padx=(2,0), pady=(2,0), sticky="ew")
+
+        self.entry_RotM_22= customtkinter.CTkEntry(self.RotMFrame, width=50, border_width=0)
+        self.entry_RotM_22.insert(0, self.Rm[1][1])
+        self.entry_RotM_22.configure(state="disabled")
+        self.entry_RotM_22.grid(row=1, column=2, padx=(2,0), pady=(2,0), sticky="ew")
+
+        self.entry_RotM_23= customtkinter.CTkEntry(self.RotMFrame, width=50, border_width=0)
+        self.entry_RotM_23.insert(0, self.Rm[1][2])
+        self.entry_RotM_23.configure(state="disabled")
+        self.entry_RotM_23.grid(row=1, column=3, padx=(2,0), pady=(2,0), sticky="ew")
+
+        self.entry_RotM_31= customtkinter.CTkEntry(self.RotMFrame, width=50, border_width=0)
+        self.entry_RotM_31.insert(0, self.Rm[2][0])
+        self.entry_RotM_31.configure(state="disabled")
+        self.entry_RotM_31.grid(row=2, column=1, padx=(2,0), pady=(2,0), sticky="ew")
+
+        self.entry_RotM_32= customtkinter.CTkEntry(self.RotMFrame, width=50, border_width=0)
+        self.entry_RotM_32.insert(0, self.Rm[2][1])
+        self.entry_RotM_32.configure(state="disabled")
+        self.entry_RotM_32.grid(row=2, column=2, padx=(2,0), pady=(2,0), sticky="ew")
+
+        self.entry_RotM_33= customtkinter.CTkEntry(self.RotMFrame, width=50, border_width=0)
+        self.entry_RotM_33.insert(0, self.Rm[2][2])
+        self.entry_RotM_33.configure(state="disabled")
+        self.entry_RotM_33.grid(row=2, column=3, padx=(2,0), pady=(2,0), sticky="ew")
+        pass
 
     def resetbutton_pressed(self):
         """
@@ -270,13 +328,18 @@ class Arcball(customtkinter.CTk):
         print(Ux)
         Raa = np.empty((3,3))
         Raa = np.identity(3)*math.cos(angle)+((1-math.cos(angle))*(axis@axis.T)) + Ux*math.sin(angle)
-       #R = np.identity(3)*0+((1-0)*(axis@axis.T)) + Ux*1
+
+        self.Rm = Raa
+        self.rotMatrix()
         print(Raa)
+
         self.M = Raa.dot(self.M)
         self.update_cube()
  
         #Example string to number
         print(float(angle)*2)
+
+        pass
 
     
     def apply_rotV(self):
@@ -305,7 +368,7 @@ class Arcball(customtkinter.CTk):
 
         self.M = Rvr.dot(self.M)
 
-
+        
         self.update_cube()"""
         pass
 
@@ -322,10 +385,13 @@ class Arcball(customtkinter.CTk):
         Ry = np.array([[math.cos(pitch),0,-math.sin(pitch)],[0,1,0],[math.sin(pitch),0,math.cos(pitch)]])
         Rz = np.array([[math.cos(yaw),math.sin(yaw),0],[-math.sin(yaw),math.cos(yaw),0],[0,0,1]])
         
-        R = Rx @ Ry @ Rz
-        R = R.transpose()
+        Rea = Rx @ Ry @ Rz
+        Rea = Rea.transpose()
 
-        self.M = R.dot(self.M)
+        self.Rm = Rea
+        self.rotMatrix()
+
+        self.M = Rea.dot(self.M)
         self.update_cube()
         
         pass
@@ -353,29 +419,18 @@ class Arcball(customtkinter.CTk):
         Rq[2,1] = (2*q[2]*q[3])+ (2*q[0]*q[1])
         Rq[1,2] = (2*q[2]*q[3])- (2*q[0]*q[1])
         
-        self.entry_RotM_11.destroy()
-        self.entry_RotM_11= customtkinter.CTkEntry(self.RotMFrame, width=50, border_width=0)
-        self.entry_RotM_11.insert(0,str((Rq[0,0])))
-        self.entry_RotM_11.configure(state="disabled")
-        self.entry_RotM_11.grid(row=0, column=1, padx=(2,0), pady=(20,0), sticky="ew")
-
-        self.entry_RotM_12.insert(0,str((Rq[0,1])))
-        self.entry_RotM_13.insert(0,str((Rq[0,2])))
-        self.entry_RotM_21.insert(0,str((Rq[1,0])))
-        self.entry_RotM_22.insert(0,str((Rq[1,1])))
-        self.entry_RotM_23.insert(0,str((Rq[1,2])))
-        self.entry_RotM_31.insert(0,str((Rq[2,0])))
-        self.entry_RotM_32.insert(0,str((Rq[2,1])))
-        self.entry_RotM_33.insert(0,str((Rq[2,2])))
+        self.rotMatrix()
         
         print(Rq)
         print(np.linalg.det(Rq))
         
+        self.Rm = Rq
+
         self.M = Rq.dot(self.M)
         print(self.M)
         self.update_cube()
 
-        pass
+        return Rq
 
     
     def onclick(self, event):
@@ -438,6 +493,8 @@ class Arcball(customtkinter.CTk):
             [0, 1, 5, 4], #Face 4
             [0, 3, 7, 4], #Face 5
             [1, 2, 6, 5]] #Face 6
+
+        self.Rm = np.identity(3)
 
         faces = []
 
