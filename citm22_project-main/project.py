@@ -265,8 +265,9 @@ class Arcball(customtkinter.CTk):
         Ux[1,2] = axis[0,0]
         Ux[2,1] = -axis[0,0]
         
+        print(np.identity(3)*math.cos(angle))
         Raa = np.empty((3,3))
-        Raa = np.identity(3)*np.math(angle)+((1-np.math(angle))*(axis@axis.T)) + Ux*np.math(angle)
+        Raa = np.identity(3)*math.cos(angle)+((1-math.cos(angle))*(axis@axis.T)) + Ux*math.sin(angle)
        #R = np.identity(3)*0+((1-0)*(axis@axis.T)) + Ux*1
         print(Raa)
         self.M = Raa.dot(self.M)
@@ -281,9 +282,17 @@ class Arcball(customtkinter.CTk):
         Event triggered function on the event of a push on the button button_rotV 
         """
         Rvector = np.zeros((3,1))
+        Rx = np.empty((3,3))
         Rvector[0,0] = self.entry_AA_ax1.get()
         Rvector[1,0] = self.entry_AA_ax2.get()
         Rvector[2,0] = self.entry_AA_ax3.get()
+
+        Rx[1,0] = Rvector[2,0]
+        Rx[0,1] = -Rvector[2,0]
+        Rx[0,2] = Rvector[1,0]
+        Rx[2,0] = -Rvector[1,0]
+        Rx[1,2] = Rvector[0,0]
+        Rx[2,1] = -Rvector[0,0]
 
         #R = np.identity(3)*np.math(angle)+((1-np.math(angle))*(axis@axis.T)) + Ux*np.math(angle)
 
