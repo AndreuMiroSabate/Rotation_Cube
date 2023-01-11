@@ -254,9 +254,9 @@ class Arcball(customtkinter.CTk):
         angle = math.radians(float(angle))
         axis = np.zeros((3,1))
         Ux = np.empty((3,3))
-        axis[0,0] = self.entry_AA_ax1.get()
-        axis[1,0] = self.entry_AA_ax2.get()
-        axis[2,0] = self.entry_AA_ax3.get()
+        axis[0,0] = self.entry_rotV_1.get()
+        axis[1,0] = self.entry_rotV_2.get()
+        axis[2,0] = self.entry_rotV_3.get()
 
         Ux[1,0] = axis[2,0]
         Ux[0,1] = -axis[2,0]
@@ -265,11 +265,11 @@ class Arcball(customtkinter.CTk):
         Ux[1,2] = axis[0,0]
         Ux[2,1] = -axis[0,0]
         
-
-        R = np.identity(3)*np.math(angle)+((1-np.math(angle))*(axis@axis.T)) + Ux*np.math(angle)
+        Raa = np.empty((3,3))
+        Raa = np.identity(3)*np.math(angle)+((1-np.math(angle))*(axis@axis.T)) + Ux*np.math(angle)
        #R = np.identity(3)*0+((1-0)*(axis@axis.T)) + Ux*1
-        print(R)
-        self.M = R.dot(self.M)
+        print(Raa)
+        self.M = Raa.dot(self.M)
         self.update_cube()
  
         #Example string to number
@@ -280,7 +280,12 @@ class Arcball(customtkinter.CTk):
         """
         Event triggered function on the event of a push on the button button_rotV 
         """
+        Rvector = np.zeros((3,1))
+        Rvector[0,0] = self.entry_AA_ax1.get()
+        Rvector[1,0] = self.entry_AA_ax2.get()
+        Rvector[2,0] = self.entry_AA_ax3.get()
 
+        #R = np.identity(3)*np.math(angle)+((1-np.math(angle))*(axis@axis.T)) + Ux*np.math(angle)
 
         pass
 
