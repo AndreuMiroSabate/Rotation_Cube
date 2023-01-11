@@ -253,19 +253,19 @@ class Arcball(customtkinter.CTk):
         angle = self.entry_AA_angle.get()
         angle = math.radians(float(angle))
         axis = np.zeros((3,1))
-        Ux = np.empty((3,3))
-        axis[0,0] = self.entry_rotV_1.get()
-        axis[1,0] = self.entry_rotV_2.get()
-        axis[2,0] = self.entry_rotV_3.get()
+        Ux = np.zeros((3,3))
+        axis[0,0] = self.entry_AA_ax1.get()
+        axis[1,0] = self.entry_AA_ax2.get()
+        axis[2,0] = self.entry_AA_ax3.get()
 
         Ux[1,0] = axis[2,0]
         Ux[0,1] = -axis[2,0]
         Ux[0,2] = axis[1,0]
         Ux[2,0] = -axis[1,0]
-        Ux[1,2] = axis[0,0]
-        Ux[2,1] = -axis[0,0]
+        Ux[1,2] = -axis[0,0]
+        Ux[2,1] = axis[0,0]
         
-        print(np.identity(3)*math.cos(angle))
+        print(Ux)
         Raa = np.empty((3,3))
         Raa = np.identity(3)*math.cos(angle)+((1-math.cos(angle))*(axis@axis.T)) + Ux*math.sin(angle)
        #R = np.identity(3)*0+((1-0)*(axis@axis.T)) + Ux*1
