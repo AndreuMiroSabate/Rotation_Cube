@@ -299,6 +299,9 @@ class Arcball(customtkinter.CTk):
             [-1,  1, -1],     
             [1,   1, -1],     
             [1,  -1, -1]], dtype=float).transpose() 
+
+        self.Rm = np.identity(3)
+        self.rotMatrix()
         self.update_cube()
 
         pass
