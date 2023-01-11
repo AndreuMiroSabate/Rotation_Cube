@@ -289,15 +289,24 @@ class Arcball(customtkinter.CTk):
         Rvector[1,0] = self.entry_AA_ax2.get()
         Rvector[2,0] = self.entry_AA_ax3.get()
 
+        Rvector = Rvector/np.linalg.norm(Rvector)
+
         Rx[1,0] = Rvector[2,0]
         Rx[0,1] = -Rvector[2,0]
         Rx[0,2] = Rvector[1,0]
         Rx[2,0] = -Rvector[1,0]
-        Rx[1,2] = Rvector[0,0]
-        Rx[2,1] = -Rvector[0,0]
+        Rx[1,2] = -Rvector[0,0]
+        Rx[2,1] = Rvector[0,0]
 
-        #R = np.identity(3)*np.math(angle)+((1-np.math(angle))*(axis@axis.T)) + Ux*np.math(angle)
+        Rmodule = np.sqrt(Rvector[0,0]**2+Rvector[1,0]**2+Rvector[2,0]**2)
 
+        Rvr = np.empty((3,3))
+        Rvr = np.identity(3)*math.cos(Rmodule)+((math.sin(Rmodule)/Rmodule)*Rx) + (1-math.cos(Rmodule)/Rmodule**2)*(Rvector@Rvector.T)
+
+        self.M = Rvr.dot(self.M)
+
+
+        self.update_cube()
         pass
 
     
@@ -363,8 +372,6 @@ class Arcball(customtkinter.CTk):
         print(np.linalg.det(Rq))
         
         self.M = Rq.dot(self.M)
-        print(self.M)
-        #self.M = self.M[0:,0:]/abs()
         print(self.M)
         self.update_cube()
 
