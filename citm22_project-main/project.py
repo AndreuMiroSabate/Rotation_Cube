@@ -183,7 +183,7 @@ class Arcball(customtkinter.CTk):
 
         #aaaa
         self.entry_RotM_11= customtkinter.CTkEntry(self.RotMFrame, width=50, border_width=0)
-        self.entry_RotM_11.insert(0,"1.2")
+        self.entry_RotM_11.insert(0,"1.0")
         self.entry_RotM_11.configure(state="disabled")
         self.entry_RotM_11.grid(row=0, column=1, padx=(2,0), pady=(20,0), sticky="ew")
 
@@ -242,6 +242,7 @@ class Arcball(customtkinter.CTk):
             [1,   1, -1],     
             [1,  -1, -1]], dtype=float).transpose() 
         self.update_cube()
+
         pass
 
     
@@ -257,6 +258,7 @@ class Arcball(customtkinter.CTk):
         axis[0,0] = self.entry_AA_ax1.get()
         axis[1,0] = self.entry_AA_ax2.get()
         axis[2,0] = self.entry_AA_ax3.get()
+        axis = axis/np.linalg.norm(axis)
 
         Ux[1,0] = axis[2,0]
         Ux[0,1] = -axis[2,0]
@@ -329,6 +331,7 @@ class Arcball(customtkinter.CTk):
         q[1,0] = self.entry_quat_1.get()
         q[2,0] = self.entry_quat_2.get()
         q[3,0] = self.entry_quat_3.get()
+        q = q/np.linalg.norm(q)
         
         Rq = np.zeros((3,3))
         Rq[0,0] = (q[0]**2+ q[1]**2-q[2]**2-q[3]**2)
