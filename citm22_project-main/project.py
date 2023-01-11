@@ -283,7 +283,7 @@ class Arcball(customtkinter.CTk):
         """
         Event triggered function on the event of a push on the button button_rotV 
         """
-        Rvector = np.zeros((3,1))
+        """Rvector = np.zeros((3,1))
         Rx = np.empty((3,3))
         Rvector[0,0] = self.entry_AA_ax1.get()
         Rvector[1,0] = self.entry_AA_ax2.get()
@@ -306,7 +306,7 @@ class Arcball(customtkinter.CTk):
         self.M = Rvr.dot(self.M)
 
 
-        self.update_cube()
+        self.update_cube()"""
         pass
 
     
