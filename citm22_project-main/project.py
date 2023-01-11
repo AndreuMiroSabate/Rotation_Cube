@@ -289,7 +289,6 @@ class Arcball(customtkinter.CTk):
         """
         Event triggered function on the event of a push on the button button_EA
         """
-        print("putas mates aaa ", self.entry_EA_roll.get())
         roll = ( float(self.entry_EA_roll.get()) * math.pi)/180
         yaw = (float(self.entry_EA_yaw.get()) * math.pi)/180
         pitch = (float(self.entry_EA_pitch.get()) * math.pi)/180
