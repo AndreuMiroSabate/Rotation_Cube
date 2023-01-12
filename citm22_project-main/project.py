@@ -355,7 +355,7 @@ class Arcball(customtkinter.CTk):
         Rvector[1,0] = self.entry_rotV_2.get()
         Rvector[2,0] = self.entry_rotV_3.get()
         Rmodule = np.linalg.norm(Rvector)
-        #Rvector = Rvector/np.linalg.norm(Rvector)
+        Rvector = Rvector/np.linalg.norm(Rvector)
 
         Rx[1,0] = Rvector[2,0]
         Rx[0,1] = -Rvector[2,0]
@@ -366,7 +366,7 @@ class Arcball(customtkinter.CTk):
 
 
         Rvr = np.empty((3,3))
-        Rvr = np.identity(3)*math.cos(Rmodule)+((math.sin(Rmodule)/Rmodule)*Rx) + (1-math.cos(Rmodule)/Rmodule**2)*(Rvector@Rvector.T)
+        Rvr = (np.identity(3)*math.cos(Rmodule))+(((math.sin(Rmodule)/Rmodule)*Rx)) + (((1-math.cos(Rmodule))/Rmodule**2)*(Rvector@Rvector.T))
         print(Rvr)
 
         self.M = Rvr.dot(self.M)
