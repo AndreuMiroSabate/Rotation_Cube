@@ -229,7 +229,7 @@ class Arcball(customtkinter.CTk):
         pass
 
     def rotMatrix(self):
-        self.entry_RotM_11.destroy()
+        """self.entry_RotM_11.destroy()
         self.entry_RotM_12.destroy()
         self.entry_RotM_13.destroy()
         self.entry_RotM_21.destroy()
@@ -237,7 +237,7 @@ class Arcball(customtkinter.CTk):
         self.entry_RotM_23.destroy()
         self.entry_RotM_31.destroy()
         self.entry_RotM_32.destroy()
-        self.entry_RotM_33.destroy()
+        self.entry_RotM_33.destroy()"""
 
         #aaaa
         self.entry_RotM_11= customtkinter.CTkEntry(self.RotMFrame, width=50, border_width=0)
@@ -349,13 +349,13 @@ class Arcball(customtkinter.CTk):
         """
         Event triggered function on the event of a push on the button button_rotV 
         """
-        """Rvector = np.zeros((3,1))
+        Rvector = np.zeros((3,1))
         Rx = np.empty((3,3))
-        Rvector[0,0] = self.entry_AA_ax1.get()
-        Rvector[1,0] = self.entry_AA_ax2.get()
-        Rvector[2,0] = self.entry_AA_ax3.get()
-
-        Rvector = Rvector/np.linalg.norm(Rvector)
+        Rvector[0,0] = self.entry_rotV_1.get()
+        Rvector[1,0] = self.entry_rotV_2.get()
+        Rvector[2,0] = self.entry_rotV_3.get()
+        Rmodule = np.linalg.norm(Rvector)
+        #Rvector = Rvector/np.linalg.norm(Rvector)
 
         Rx[1,0] = Rvector[2,0]
         Rx[0,1] = -Rvector[2,0]
@@ -364,15 +364,15 @@ class Arcball(customtkinter.CTk):
         Rx[1,2] = -Rvector[0,0]
         Rx[2,1] = Rvector[0,0]
 
-        Rmodule = np.sqrt(Rvector[0,0]**2+Rvector[1,0]**2+Rvector[2,0]**2)
 
         Rvr = np.empty((3,3))
         Rvr = np.identity(3)*math.cos(Rmodule)+((math.sin(Rmodule)/Rmodule)*Rx) + (1-math.cos(Rmodule)/Rmodule**2)*(Rvector@Rvector.T)
+        print(Rvr)
 
         self.M = Rvr.dot(self.M)
 
         
-        self.update_cube()"""
+        self.update_cube()
         pass
 
     
@@ -443,6 +443,9 @@ class Arcball(customtkinter.CTk):
         print("Pressed button", event.button)
 
         if event.button:
+            x_fig_0, y_fig_0 = self.canvas_coordinates_to_figure_coordinates(event.x,event.y)
+            self.M0[0,0]= x_fig_0
+            self.M0[1,0]= y_fig_0
             self.pressed = True # Bool to control(activate) a drag (click+move)
 
 
@@ -450,19 +453,39 @@ class Arcball(customtkinter.CTk):
         """
         Event triggered function on the event of a mouse motion
         """
-        
+        M1 = np.array((2,1))
         #Example
         if self.pressed: #Only triggered if previous click
             
             x_fig,y_fig= self.canvas_coordinates_to_figure_coordinates(event.x,event.y) #Extract viewport coordinates
+            M1[0,0]= x_fig
+            M1[1,0]= y_fig
+
+            angle = math.acos((M1.T*self.M0)/(np.linalg.norm(M1)*np.linalg.norm(self.M0)))
             
             print("x: ", x_fig)
             print("y", y_fig)
             print("r2", x_fig*x_fig+y_fig*y_fig)
-            
-            R = np.array([[0, 1, 0], [-1, 0, 0], [0, 0, 1]])
+
+            q = np.array((4,1))
+
+            q[0,0]=math.cos(angle/2)
+            q[1:,0] = math.sin(angle/2)*(np.cross(self.M0,M1)/np.linalg.norm(np.cross(M1,self.M0)))
+
+            Rq = np.zeros((3,3))
+            Rq[0,0] = (q[0]**2+ q[1]**2-q[2]**2-q[3]**2)
+            Rq[1,1] = q[0]**2- q[1]**2+q[2]**2-q[3]**2
+            Rq[2,2] = q[0]**2- q[1]**2-q[2]**2+q[3]**2
+            Rq[0,1] = (2*q[1]*q[2])- (2*q[0]*q[3])
+            Rq[1,0] = (2*q[1]*q[2])+ (2*q[0]*q[3])
+            Rq[0,2] = (2*q[1]*q[3])+ (2*q[0]*q[2])
+            Rq[2,0] = (2*q[1]*q[3])- (2*q[0]*q[2])
+            Rq[2,1] = (2*q[2]*q[3])+ (2*q[0]*q[1])
+            Rq[1,2] = (2*q[2]*q[3])- (2*q[0]*q[1])
+
+            self.rotMatrix()
                     
-            self.M = R.dot(self.M) #Modify the vertices matrix with a rotation matrix M
+            self.M = Rq.dot(self.M) #Modify the vertices matrix with a rotation matrix M
 
             self.update_cube() #Update the cube
 
@@ -498,6 +521,7 @@ class Arcball(customtkinter.CTk):
             [1, 2, 6, 5]] #Face 6
 
         self.Rm = np.identity(3)
+        self.M0 = np.array((2,1))
 
         faces = []
 
