@@ -466,6 +466,8 @@ class Arcball(customtkinter.CTk):
         Event triggered function on the event of a mouse motion
         """
         M1 = np.zeros((3,1))
+        qp = np.zeros((4,1))
+        q = np.zeros((4,1))
         #Example
         if self.pressed: #Only triggered if previous click
             
@@ -489,10 +491,15 @@ class Arcball(customtkinter.CTk):
             print("y", y_fig)
             print("r2", x_fig*x_fig+y_fig*y_fig)
 
-            q = np.zeros((4,1))
+            
 
             q[0,0]=math.cos(angle/2)
             q[1:,0] = math.sin(angle/2)*(np.cross(self.M0.T,M1.T)/np.linalg.norm(np.cross(self.M0.T,M1.T)))
+
+            if(qp[0,0] !=0 or qp[1,0] !=0 or qp[2,0] !=0 or qp[3,0] !=0):
+                q = q
+                q[0,0] = (q[0,0]*qp[0,0])-(q[1:0].T@qp[1:,0])
+                q[1:,0] = (q[0,0]*qp[1:,0]) + (qp[0,0]*q[1:,0]) + (np.cross(q[1:,0],qp[1:,0]))
 
             Rq = np.zeros((3,3))
             Rq[0,0] = (q[0]**2+ q[1]**2-q[2]**2-q[3]**2)
@@ -507,6 +514,7 @@ class Arcball(customtkinter.CTk):
                     
             self.M = Rq.dot(self.M) #Modify the vertices matrix with a rotation matrix M
 
+            qp = q
             self.M0 = M1
 
             self.update_cube() #Update the cube
