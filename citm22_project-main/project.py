@@ -333,7 +333,7 @@ class Arcball(customtkinter.CTk):
         Raa = np.identity(3)*math.cos(angle)+((1-math.cos(angle))*(axis@axis.T)) + Ux*math.sin(angle)
 
         self.Rm = Raa
-        self.rotMatrix()
+
         print(Raa)
 
         self.M = Raa.dot(self.M)
@@ -393,7 +393,7 @@ class Arcball(customtkinter.CTk):
         Rea = Rea.transpose()
 
         self.Rm = Rea
-        self.rotMatrix()
+
 
         self.M = Rea.dot(self.M)
         self.update_cube()
@@ -423,7 +423,7 @@ class Arcball(customtkinter.CTk):
         Rq[2,1] = (2*q[2]*q[3])+ (2*q[0]*q[1])
         Rq[1,2] = (2*q[2]*q[3])- (2*q[0]*q[1])
         
-        self.rotMatrix()
+
         
         print(Rq)
         print(np.linalg.det(Rq))
@@ -445,9 +445,19 @@ class Arcball(customtkinter.CTk):
 
         if event.button:
             x_fig_0, y_fig_0 = self.canvas_coordinates_to_figure_coordinates(event.x,event.y)
-            self.M0[0,0]= x_fig_0
-            self.M0[1,0]= y_fig_0
-            self.M0[2,0] = x_fig_0*x_fig_0+y_fig_0*y_fig_0**2/(2*(np.sqrt(x_fig_0**2+y_fig_0**2)))
+            
+            r = (x_fig_0*x_fig_0+y_fig_0*y_fig_0)*2
+            if(x_fig_0**2 + y_fig_0**2 < 1/2*r):
+                self.M0[0,0] = x_fig_0
+                self.M0[1,0] = y_fig_0
+                self.M0[2,0] = np.sqrt(r-x_fig_0**2-y_fig_0**2)
+            elif(x_fig_0**2 + y_fig_0**2 >= 1/2*r):
+                self.M0[0,0] = x_fig_0
+                self.M0[1,0] = y_fig_0
+                self.M0[2,0] = r/2*np.sqrt(x_fig_0**2+y_fig_0**2)
+
+                self.M0 = self.M0*np.sqrt(r)/np.linalg.norm(self.M0)
+
             self.pressed = True # Bool to control(activate) a drag (click+move)
 
 
@@ -460,9 +470,18 @@ class Arcball(customtkinter.CTk):
         if self.pressed: #Only triggered if previous click
             
             x_fig,y_fig= self.canvas_coordinates_to_figure_coordinates(event.x,event.y) #Extract viewport coordinates
-            M1[0,0]= x_fig
-            M1[1,0]= y_fig
-            M1[2,0] = x_fig*x_fig+y_fig*y_fig**2/(2*(np.sqrt(x_fig**2+y_fig**2)))
+
+            r = (x_fig*x_fig+y_fig*y_fig)*2
+            if(x_fig**2 + y_fig**2 < 1/2*r):
+                M1[0,0] = x_fig
+                M1[1,0] = y_fig
+                M1[2,0] = np.sqrt(r-x_fig**2-y_fig**2)
+            elif(x_fig**2 + y_fig**2 >= 1/2*r):
+                M1[0,0] = x_fig
+                M1[1,0] = y_fig
+                M1[2,0] = r/2*np.sqrt(x_fig**2+y_fig**2)
+
+                M1 = M1*np.sqrt(r)/np.linalg.norm(M1)
 
             angle = math.acos((M1.T@self.M0)/(np.linalg.norm(M1)*np.linalg.norm(self.M0)))
             
@@ -485,8 +504,6 @@ class Arcball(customtkinter.CTk):
             Rq[2,0] = (2*q[1]*q[3])- (2*q[0]*q[2])
             Rq[2,1] = (2*q[2]*q[3])+ (2*q[0]*q[1])
             Rq[1,2] = (2*q[2]*q[3])- (2*q[0]*q[1])
-
-            self.rotMatrix()
                     
             self.M = Rq.dot(self.M) #Modify the vertices matrix with a rotation matrix M
 
@@ -575,6 +592,7 @@ class Arcball(customtkinter.CTk):
 
         self.facesObj.set_verts(faces)
         self.bm.update()
+        self.rotMatrix()
 
 
     def canvas_coordinates_to_figure_coordinates(self,x_can,y_can):
