@@ -507,6 +507,8 @@ class Arcball(customtkinter.CTk):
                     
             self.M = Rq.dot(self.M) #Modify the vertices matrix with a rotation matrix M
 
+            self.M0 = M1
+
             self.update_cube() #Update the cube
 
 
