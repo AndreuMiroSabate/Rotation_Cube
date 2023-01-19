@@ -229,7 +229,7 @@ class Arcball(customtkinter.CTk):
         pass
 
     def rotMatrix(self):
-        """self.entry_RotM_11.destroy()
+        self.entry_RotM_11.destroy()
         self.entry_RotM_12.destroy()
         self.entry_RotM_13.destroy()
         self.entry_RotM_21.destroy()
@@ -237,7 +237,7 @@ class Arcball(customtkinter.CTk):
         self.entry_RotM_23.destroy()
         self.entry_RotM_31.destroy()
         self.entry_RotM_32.destroy()
-        self.entry_RotM_33.destroy()"""
+        self.entry_RotM_33.destroy()
 
         #aaaa
         self.entry_RotM_11= customtkinter.CTkEntry(self.RotMFrame, width=50, border_width=0)
@@ -485,39 +485,41 @@ class Arcball(customtkinter.CTk):
 
                 M1 = M1*np.sqrt(r)/np.linalg.norm(M1)
 
-            angle = math.acos((M1.T@self.M0)/(np.linalg.norm(M1)*np.linalg.norm(self.M0)))
-            
-            print("x: ", x_fig)
-            print("y", y_fig)
-            print("r2", x_fig*x_fig+y_fig*y_fig)
+        angle = math.acos((M1.T@self.M0)/(np.linalg.norm(M1)*np.linalg.norm(self.M0)))
+        
+        print("x: ", x_fig)
+        print("y", y_fig)
+        print("r2", x_fig*x_fig+y_fig*y_fig)
 
-            
+        
 
-            q[0,0]=math.cos(angle/2)
-            q[1:,0] = math.sin(angle/2)*(np.cross(self.M0.T,M1.T)/np.linalg.norm(np.cross(self.M0.T,M1.T)))
+        q[0,0]=math.cos(angle/2)
+        q[1:,0] = math.sin(angle/2)*(np.cross(self.M0.T,M1.T)/np.linalg.norm(np.cross(self.M0.T,M1.T)))
 
-            if(qp[0,0] !=0 or qp[1,0] !=0 or qp[2,0] !=0 or qp[3,0] !=0):
-                q = q
-                q[0,0] = (q[0,0]*qp[0,0])-(q[1:0].T@qp[1:,0])
-                q[1:,0] = (q[0,0]*qp[1:,0]) + (qp[0,0]*q[1:,0]) + (np.cross(q[1:,0],qp[1:,0]))
+        if(qp[0,0] !=0 or qp[1,0] !=0 or qp[2,0] !=0 or qp[3,0] !=0):
+            q = q
+            q[0,0] = (q[0,0]*qp[0,0])-(q[1:0].T@qp[1:,0])
+            q[1:,0] = (q[0,0]*qp[1:,0]) + (qp[0,0]*q[1:,0]) + (np.cross(q[1:,0],qp[1:,0]))
 
-            Rq = np.zeros((3,3))
-            Rq[0,0] = (q[0]**2+ q[1]**2-q[2]**2-q[3]**2)
-            Rq[1,1] = q[0]**2- q[1]**2+q[2]**2-q[3]**2
-            Rq[2,2] = q[0]**2- q[1]**2-q[2]**2+q[3]**2
-            Rq[0,1] = (2*q[1]*q[2])- (2*q[0]*q[3])
-            Rq[1,0] = (2*q[1]*q[2])+ (2*q[0]*q[3])
-            Rq[0,2] = (2*q[1]*q[3])+ (2*q[0]*q[2])
-            Rq[2,0] = (2*q[1]*q[3])- (2*q[0]*q[2])
-            Rq[2,1] = (2*q[2]*q[3])+ (2*q[0]*q[1])
-            Rq[1,2] = (2*q[2]*q[3])- (2*q[0]*q[1])
-                    
-            self.M = Rq.dot(self.M) #Modify the vertices matrix with a rotation matrix M
+        Rq = np.zeros((3,3))
+        Rq[0,0] = (q[0]**2+ q[1]**2-q[2]**2-q[3]**2)
+        Rq[1,1] = q[0]**2- q[1]**2+q[2]**2-q[3]**2
+        Rq[2,2] = q[0]**2- q[1]**2-q[2]**2+q[3]**2
+        Rq[0,1] = (2*q[1]*q[2])- (2*q[0]*q[3])
+        Rq[1,0] = (2*q[1]*q[2])+ (2*q[0]*q[3])
+        Rq[0,2] = (2*q[1]*q[3])+ (2*q[0]*q[2])
+        Rq[2,0] = (2*q[1]*q[3])- (2*q[0]*q[2])
+        Rq[2,1] = (2*q[2]*q[3])+ (2*q[0]*q[1])
+        Rq[1,2] = (2*q[2]*q[3])- (2*q[0]*q[1])
+        
+        self.Rm = Rq
+        Rq = -Rq
+        self.M = Rq.dot(self.M) #Modify the vertices matrix with a rotation matrix M
 
-            qp = q
-            self.M0 = M1
+        qp = q
+        self.M0 = M1
 
-            self.update_cube() #Update the cube
+        self.update_cube() #Update the cube
 
 
     def onrelease(self,event):
