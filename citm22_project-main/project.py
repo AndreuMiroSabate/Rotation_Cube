@@ -350,12 +350,13 @@ class Arcball(customtkinter.CTk):
         Event triggered function on the event of a push on the button button_rotV 
         """
         Rvector = np.zeros((3,1))
-        Rx = np.empty((3,3))
+        Rx = np.zeros((3,3))
         Rvector[0,0] = self.entry_rotV_1.get()
         Rvector[1,0] = self.entry_rotV_2.get()
         Rvector[2,0] = self.entry_rotV_3.get()
-        Rmodule = np.linalg.norm(Rvector)
+       
         Rvector = Rvector/np.linalg.norm(Rvector)
+        Rmodule = np.linalg.norm(Rvector)
 
         Rx[1,0] = Rvector[2,0]
         Rx[0,1] = -Rvector[2,0]
@@ -368,7 +369,7 @@ class Arcball(customtkinter.CTk):
         Rvr = np.empty((3,3))
         Rvr = (np.identity(3)*math.cos(Rmodule))+(((math.sin(Rmodule)/Rmodule)*Rx)) + (((1-math.cos(Rmodule))/Rmodule**2)*(Rvector@Rvector.T))
         print(Rvr)
-
+        
         self.M = Rvr.dot(self.M)
 
         
@@ -446,6 +447,7 @@ class Arcball(customtkinter.CTk):
             x_fig_0, y_fig_0 = self.canvas_coordinates_to_figure_coordinates(event.x,event.y)
             self.M0[0,0]= x_fig_0
             self.M0[1,0]= y_fig_0
+            self.M0[2,0] = x_fig_0*x_fig_0+y_fig_0*y_fig_0**2/(2*(np.sqrt(x_fig_0**2+y_fig_0**2)))
             self.pressed = True # Bool to control(activate) a drag (click+move)
 
 
@@ -453,24 +455,25 @@ class Arcball(customtkinter.CTk):
         """
         Event triggered function on the event of a mouse motion
         """
-        M1 = np.array((2,1))
+        M1 = np.zeros((3,1))
         #Example
         if self.pressed: #Only triggered if previous click
             
             x_fig,y_fig= self.canvas_coordinates_to_figure_coordinates(event.x,event.y) #Extract viewport coordinates
             M1[0,0]= x_fig
             M1[1,0]= y_fig
+            M1[2,0] = x_fig*x_fig+y_fig*y_fig**2/(2*(np.sqrt(x_fig**2+y_fig**2)))
 
-            angle = math.acos((M1.T*self.M0)/(np.linalg.norm(M1)*np.linalg.norm(self.M0)))
+            angle = math.acos((M1.T@self.M0)/(np.linalg.norm(M1)*np.linalg.norm(self.M0)))
             
             print("x: ", x_fig)
             print("y", y_fig)
             print("r2", x_fig*x_fig+y_fig*y_fig)
 
-            q = np.array((4,1))
+            q = np.zeros((4,1))
 
             q[0,0]=math.cos(angle/2)
-            q[1:,0] = math.sin(angle/2)*(np.cross(self.M0,M1)/np.linalg.norm(np.cross(M1,self.M0)))
+            q[1:,0] = math.sin(angle/2)*(np.cross(self.M0.T,M1.T)/np.linalg.norm(np.cross(self.M0.T,M1.T)))
 
             Rq = np.zeros((3,3))
             Rq[0,0] = (q[0]**2+ q[1]**2-q[2]**2-q[3]**2)
@@ -521,7 +524,7 @@ class Arcball(customtkinter.CTk):
             [1, 2, 6, 5]] #Face 6
 
         self.Rm = np.identity(3)
-        self.M0 = np.array((2,1))
+        self.M0 = np.zeros((3,1))
 
         faces = []
 

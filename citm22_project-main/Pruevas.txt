@@ -1,0 +1,40 @@
+M1 = np.zeros((3,1))
+        #Example
+        if self.pressed: #Only triggered if previous click
+            
+            x_fig,y_fig= self.canvas_coordinates_to_figure_coordinates(event.x,event.y) #Extract viewport coordinates
+            M1[0,0]= x_fig
+            M1[1,0]= y_fig
+            M1[2,0]= 1
+
+            angle = math.acos((M1.T@self.M0)/(np.linalg.norm(M1)*np.linalg.norm(self.M0)))
+            
+            print("x: ", x_fig)
+            print("y", y_fig)
+            print("r2", x_fig*x_fig+y_fig*y_fig)
+
+            q = np.zeros((4,1))
+
+            q[0,0]=math.cos(angle/2)
+            q[1:,0] = math.sin(angle/2)*(np.cross(self.M0,M1)/np.linalg.norm(np.cross(self.M0,M1)))
+
+            Rq = np.zeros((3,3))
+            Rq[0,0] = (q[0]**2+ q[1]**2-q[2]**2-q[3]**2)
+            Rq[1,1] = q[0]**2- q[1]**2+q[2]**2-q[3]**2
+            Rq[2,2] = q[0]**2- q[1]**2-q[2]**2+q[3]**2
+            Rq[0,1] = (2*q[1]*q[2])- (2*q[0]*q[3])
+            Rq[1,0] = (2*q[1]*q[2])+ (2*q[0]*q[3])
+            Rq[0,2] = (2*q[1]*q[3])+ (2*q[0]*q[2])
+            Rq[2,0] = (2*q[1]*q[3])- (2*q[0]*q[2])
+            Rq[2,1] = (2*q[2]*q[3])+ (2*q[0]*q[1])
+            Rq[1,2] = (2*q[2]*q[3])- (2*q[0]*q[1])
+
+            self.rotMatrix()
+
+
+
+
+ x_fig_0, y_fig_0 = self.canvas_coordinates_to_figure_coordinates(event.x,event.y)
+            self.M0[0,0]= x_fig_0
+            self.M0[1,0]= y_fig_0
+            self.M0[2,0]= 1
