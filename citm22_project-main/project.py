@@ -285,6 +285,9 @@ class Arcball(customtkinter.CTk):
         self.entry_RotM_33.configure(state="disabled")
         self.entry_RotM_33.grid(row=2, column=3, padx=(2,0), pady=(2,0), sticky="ew")
         pass
+    
+    def change_Values(self):
+        self.entry_AA_ax1.insert(0,"3.0")
 
     def resetbutton_pressed(self):
         """
@@ -513,12 +516,12 @@ class Arcball(customtkinter.CTk):
         Rq[1,2] = (2*q[2]*q[3])- (2*q[0]*q[1])
         
         self.Rm = Rq
-        Rq = -Rq
         self.M = Rq.dot(self.M) #Modify the vertices matrix with a rotation matrix M
 
         qp = q
         self.M0 = M1
 
+        self.change_Values()
         self.update_cube() #Update the cube
 
 
