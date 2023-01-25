@@ -287,7 +287,61 @@ class Arcball(customtkinter.CTk):
         pass
     
     def change_Values(self):
-        self.entry_AA_ax1.insert(0,"3.0")
+
+        # Angle / Axis
+        self.entry_AA_ax1.destroy()
+        self.entry_AA_ax1 = customtkinter.CTkEntry(self.tabview.tab("Axis angle"))
+        self.entry_AA_ax1.insert(0,"1.0")
+        self.entry_AA_ax1.grid(row=0, column=1, padx=(5, 0), pady=(50, 0), sticky="ew")
+
+        self.entry_AA_ax2.destroy()
+        self.entry_AA_ax2 = customtkinter.CTkEntry(self.tabview.tab("Axis angle"))
+        self.entry_AA_ax2.insert(0,"5.5")
+        self.entry_AA_ax2.grid(row=1, column=1, padx=(5, 0), pady=(5, 0), sticky="ew")
+
+        self.entry_AA_ax3.destroy()
+        self.entry_AA_ax3 = customtkinter.CTkEntry(self.tabview.tab("Axis angle"))
+        self.entry_AA_ax3.insert(0,"5.5")
+        self.entry_AA_ax3.grid(row=2, column=1, padx=(5, 0), pady=(5, 10), sticky="ew")
+
+        self.entry_AA_angle.destroy()
+        self.label_AA_angle = customtkinter.CTkLabel(self.tabview.tab("Axis angle"), text="Angle:")
+        self.label_AA_angle.grid(row=3, column=0, padx=(120,0), pady=(10, 20),sticky="w")
+        self.entry_AA_angle = customtkinter.CTkEntry(self.tabview.tab("Axis angle"))
+        self.entry_AA_angle.insert(0,"5.5")
+        self.entry_AA_angle.grid(row=3, column=1, padx=(5, 0), pady=(0, 10), sticky="ew")
+
+        # rotV
+        self.entry_rotV_1.destroy()
+        self.entry_rotV_1 = customtkinter.CTkEntry(self.tabview.tab("Rotation vector"))
+        self.entry_rotV_1.insert(0,"5.5")
+        self.entry_rotV_1.grid(row=0, column=1, padx=(5, 60), pady=(50, 0), sticky="ew")
+
+        self.entry_rotV_2.destroy()
+        self.entry_rotV_2 = customtkinter.CTkEntry(self.tabview.tab("Rotation vector"))
+        self.entry_rotV_2.insert(0,"5.5")
+        self.entry_rotV_2.grid(row=1, column=1, padx=(5, 60), pady=(5, 0), sticky="ew")
+
+        self.entry_rotV_3.destroy()
+        self.entry_rotV_3 = customtkinter.CTkEntry(self.tabview.tab("Rotation vector"))
+        self.entry_rotV_3.insert(0,"4")
+        self.entry_rotV_3.grid(row=2, column=1, padx=(5, 60), pady=(5, 10), sticky="ew")
+
+        # Euler angles
+        self.entry_EA_roll.destroy()
+        self.entry_EA_roll = customtkinter.CTkEntry(self.tabview.tab("Euler angles"))
+        self.entry_EA_roll.insert(0,"5.5")
+        self.entry_EA_roll.grid(row=0, column=1, padx=(5, 60), pady=(50, 0), sticky="ew")
+
+        self.entry_EA_pitch.destroy()
+        self.entry_EA_pitch = customtkinter.CTkEntry(self.tabview.tab("Euler angles"))
+        self.entry_EA_pitch.insert(0,"5.5")
+        self.entry_EA_pitch.grid(row=1, column=1, padx=(5, 60), pady=(5, 0), sticky="ew")
+
+        self.entry_EA_yaw.destroy()
+        self.entry_EA_yaw = customtkinter.CTkEntry(self.tabview.tab("Euler angles"))
+        self.entry_EA_yaw.insert(0,"5.5")
+        self.entry_EA_yaw.grid(row=2, column=1, padx=(5, 60), pady=(5, 10), sticky="ew") 
 
     def resetbutton_pressed(self):
         """
@@ -425,7 +479,6 @@ class Arcball(customtkinter.CTk):
         Rq[2,0] = (2*q[1]*q[3])- (2*q[0]*q[2])
         Rq[2,1] = (2*q[2]*q[3])+ (2*q[0]*q[1])
         Rq[1,2] = (2*q[2]*q[3])- (2*q[0]*q[1])
-        
 
         
         print(Rq)
@@ -515,6 +568,31 @@ class Arcball(customtkinter.CTk):
         Rq[2,1] = (2*q[2]*q[3])+ (2*q[0]*q[1])
         Rq[1,2] = (2*q[2]*q[3])- (2*q[0]*q[1])
         
+
+
+        # Change quaternion on screen values
+        self.entry_quat_0.destroy()
+        self.entry_quat_0 = customtkinter.CTkEntry(self.tabview.tab("Quaternion"))
+        self.entry_quat_0.insert(0, q[0])
+        self.entry_quat_0.grid(row=0, column=1, padx=(5, 60), pady=(50, 0), sticky="ew")
+
+        self.entry_quat_1.destroy()
+        self.entry_quat_1 = customtkinter.CTkEntry(self.tabview.tab("Quaternion"))
+        self.entry_quat_1.insert(0, q[1])
+        self.entry_quat_1.grid(row=1, column=1, padx=(5, 60), pady=(5, 0), sticky="ew")
+
+        self.entry_quat_2.destroy()
+        self.entry_quat_2 = customtkinter.CTkEntry(self.tabview.tab("Quaternion"))
+        self.entry_quat_2.insert(0, q[2])
+        self.entry_quat_2.grid(row=2, column=1, padx=(5, 60), pady=(5, 0), sticky="ew")
+
+        self.entry_quat_3.destroy()
+        self.entry_quat_3 = customtkinter.CTkEntry(self.tabview.tab("Quaternion"))
+        self.entry_quat_3.insert(0, q[3])
+        self.entry_quat_3.grid(row=3, column=1, padx=(5, 60), pady=(5, 10), sticky="ew")
+
+
+
         self.Rm = Rq
         self.M = Rq.dot(self.M) #Modify the vertices matrix with a rotation matrix M
 
