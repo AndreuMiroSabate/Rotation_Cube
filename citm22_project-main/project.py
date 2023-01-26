@@ -250,16 +250,18 @@ class Arcball(customtkinter.CTk):
 
 
         # rotV
+        rotV = np.array([[0],[0],[0]])
+        rotV = ax*(ang*np.pi/180)
         self.entry_rotV_1 = customtkinter.CTkEntry(self.tabview.tab("Rotation vector"))
-        self.entry_rotV_1.insert(0,"5.5")
+        self.entry_rotV_1.insert(0,rotV[0,0])
         self.entry_rotV_1.grid(row=0, column=1, padx=(5, 60), pady=(50, 0), sticky="ew")
 
         self.entry_rotV_2 = customtkinter.CTkEntry(self.tabview.tab("Rotation vector"))
-        self.entry_rotV_2.insert(0,"5.5")
+        self.entry_rotV_2.insert(0,rotV[1,0])
         self.entry_rotV_2.grid(row=1, column=1, padx=(5, 60), pady=(5, 0), sticky="ew")
 
         self.entry_rotV_3 = customtkinter.CTkEntry(self.tabview.tab("Rotation vector"))
-        self.entry_rotV_3.insert(0,"4")
+        self.entry_rotV_3.insert(0,rotV[2,0])
         self.entry_rotV_3.grid(row=2, column=1, padx=(5, 60), pady=(5, 10), sticky="ew")
 
         
@@ -735,7 +737,7 @@ def rotMat2Eaa(R):
     if R.all() == np.identity(3).all():
         return(np.array([[1],[0],[0]]), 0)
 
-    angle = math.acos((np.trace(R)-1)/2)
+    angle = np.arccos((np.trace(R)-1)/2)
 
     uaxis = (R-R.T)/(2 * math.sin(angle)) 
 
@@ -756,7 +758,7 @@ def rotMat2Eaa(R):
     else:
       axis = np.array([[uaxis[2][1]],[uaxis[0][2]],[uaxis[1][0]]])
     
-    return(axis, np.rad2deg(angle))
+    return(axis, angle*180/np.pi)
 
 def rotM2eAngles(R): #psi, theta, phi
     '''
@@ -768,11 +770,11 @@ def rotM2eAngles(R): #psi, theta, phi
 
     pitch = np.arcsin(-R[2][0])
 
-    roll = np.arctan2((R[2][1]/math.cos(pitch)),(R[2][2]/math.cos(pitch)))
+    roll = np.arctan2((R[2][1]/np.cos(pitch)),(R[2][2]/np.cos(pitch)))
 
-    yaw = np.arctan2((R[1][0]/math.cos(pitch)),(R[0][0]/math.cos(pitch)))
+    yaw = np.arctan2((R[1][0]/np.cos(pitch)),(R[0][0]/np.cos(pitch)))
 
-    return (np.rad2deg(yaw), np.rad2deg(pitch),  np.rad2deg(roll))
+    return (yaw*180/np.pi, pitch*180/np.pi,  roll*180/np.pi)
 
 if __name__ == "__main__":
     app = Arcball()
