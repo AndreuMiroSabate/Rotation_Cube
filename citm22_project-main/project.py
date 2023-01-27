@@ -391,6 +391,7 @@ class Arcball(customtkinter.CTk):
         Rvr = (np.identity(3)*math.cos(Rmodule))+(((math.sin(Rmodule)/Rmodule)*Rx)) + (((1-math.cos(Rmodule))/Rmodule**2)*(Rvector@Rvector.T))
         print(Rvr)
         
+        self.Rm = Rvr
         self.M = Rvr.dot(self.M)
 
         
